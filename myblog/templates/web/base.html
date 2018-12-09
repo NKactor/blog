@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    {% block meta %}
+    {% endblock %}
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+
+    {% block css %}
+    {% endblock %}
+
+    {% block js %}
+    {% endblock %}
+
+</head>
+
+<body>
+    <header class="header-navigation" id="header">
+        {% block header %}
+        {% endblock %}
+    </header>
+<article>
+
+    {% block aside %}
+    {% endblock %}
+
+    {% block main %}
+    {% endblock %}
+
+</article>
+
+    {% block footer %}
+    {% endblock %}
+
+    {% block backtop %}
+    {% endblock %}
+
+<footer>
+   {% block foot %}
+    {% endblock %}
+</footer>
+</body>
+</html>

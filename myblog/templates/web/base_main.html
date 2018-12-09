@@ -1,0 +1,151 @@
+
+{% extends './base.html'%}
+
+{% block meta %}
+<meta charset="utf-8">
+<meta name="keywords" content="个人博客,杨青个人博客,个人博客模板,杨青" />
+<meta name="description" content="杨青个人博客，是一个站在web前端设计之路的女程序员个人网站，提供个人博客模板免费资源下载的个人原创网站。" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+
+{% block title %}
+    首页_杨青个人博客 - 一个站在web前端设计之路的女技术员个人博客网站
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/web/css/base.css">
+    <link rel="stylesheet" href="/static/web/css/index.css">
+    <link href="/static/web/css/m.css" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="/static/web/js/jquery.min.js"></script>
+    <script src="/static/web/js/comm.js"></script>
+		<script type="text/javascript">
+			$.ajax({
+				url: '/api/web/cat/',
+				type: 'GET',
+				dataType: 'json',
+				success: function(jsonObj){
+					$.each(jsonObj.data.results, function(index, elem){
+						$('.fenlei ul').append(
+								$('<li>').append(
+									$('<a>').attr('href', elem.id).html(elem.type_name + '&emsp;(' + elem.count + ')')
+									.on('click', sel_all_art)
+								)
+								
+						)
+					})
+					
+				},
+			});
+			
+			function sel_all_art(evt){
+				$.ajax({
+						url: '/api/web/userinfo/',
+						type: 'GET',
+						dataType: 'json',
+						success: get_headimg,
+						error: function(data){
+							console.log('失败')
+						}
+				});
+			}
+			
+
+				$.ajax({
+						url: '/api/web/userinfo/',
+						type: 'GET',
+						dataType: 'json',
+						success: get_headimg,
+						error: function(data){
+							console.log('失败')
+						}
+				});
+				
+				function get_headimg(jsonObj){
+					data = jsonObj.data.results
+					imge = document.querySelector("#about_me_img")
+					if (imge){
+						for (var i = 0; i < data.length; i++){
+							imge.src = data[i].head_img
+							document.querySelector(".about_me ul p").innerHTML = data[i].udesc
+						}
+					}
+				}	
+				
+		</script>
+		
+{% endblock %}
+
+{% block header %}
+
+
+<header class="header-navigation" id="header">
+  <nav><div class="logo"><a href="{% url 'web:index' %}">杨青个人博客</a></div>
+    <h2 id="mnavh"><span class="navicon"></span></h2>
+    <ul id="starlist">
+      <li><a href="{% url 'web:index' %}">网站首页</a></li>
+      <li><a href="{% url 'web:share' %}">我的相册</a></li>
+      <li><a href="{% url 'web:diary' %}">我的日记</a></li>
+      <li><a href="{% url 'web:about' %}">关于我</a></li>
+      <li><a href="{% url 'web:message' %}">留言</a></li>
+      <li><a href="{% url 'backweb:login' %}">登录</a></li>
+    </ul>
+</nav>
+</header>
+    </ul>
+</nav> -->
+{% endblock%}
+
+{% block aside %}
+    <aside class="l_box">
+    <div class="about_me">
+      <h2>关于我</h2>
+      <ul>
+        <i><img id="about_me_img"></i>
+       <p style="width: auto; height: 120px; overflow: hidden;"><b>杨青</b>，一个80后草根女站长！09年入行。一直潜心研究web前端技术，一边工作一边积累经验，分享一些个人博客模板，以及SEO优化等心得。</p>
+      </ul>
+    </div>
+    <div class="wdxc">
+      <h2>我的相册</h2>
+      <ul>
+        <li><a href=""><img src="/static/web/images/7.jpg"></a></li>
+        <li><a href=""><img src="/static/web/images/8.jpg"></a></li>
+        <li><a href=""><img src="/static/web/images/9.jpg"></a></li>
+        <li><a href=""><img src="/static/web/images/10.jpg"></a></li>
+        <li><a href=""><img src="/static/web/images/11.jpg"></a></li>
+        <li><a href=""><img src="/static/web/images/12.jpg"></a></li>
+      </ul>
+    </div>
+    <div class="search">
+      <form name="search" id="searchform">
+          {% csrf_token %}
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" type="text">
+        <input id="sub" name="Submit" class="input_submit" value="搜索" type="button">
+      </form>
+    </div>
+    <div class="fenlei">
+      <h2>文章分类</h2>
+      <ul>
+				
+      </ul>
+    </div>
+    
+		<div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+        <a href="#">陌上花开</a> <a href="#">校园生活</a> <a href="#">html5</a> <a href="#">SumSung</a> <a href="#">青春</a> <a href="#">温暖</a> <a href="#">阳光</a> <a href="#">三星</a><a href="#">索尼</a> <a href="#">华维荣耀</a> <a href="#">三星</a> <a href="#">索尼</a>
+      </ul>
+    </div>	
+
+  </aside>
+{% endblock %}
+
+{% block foot %}
+  <p>Design by <a href="">杨个人博客</a> <a href="">蜀ICP备11002373号-1</a></p>
+{% endblock %}
+
+{% block backtop %}
+    <a href="#" class="cd-top">Top</a>
+{% endblock %}

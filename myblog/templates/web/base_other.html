@@ -1,0 +1,133 @@
+
+{% extends './base_main.html'%}
+
+{% block js %}
+	{{ block.super }}
+	
+    <script>
+		$.ajax({
+			  url: '/api/web/article/',
+				type: 'GET',
+				dataType: 'json',
+				success: successfun,
+				error: function(data){
+					console.log('失败')
+				}
+	    });
+			
+		function sel_many(evt){
+			if (evt.target.url){
+				main = document.querySelector('.r_box')
+				main.textContent = ''
+				$.ajax({
+					url: evt.target.url,
+					type: 'GET',
+					dataType: 'json',
+					success: 	successfun,
+				})
+			}else{
+				evt.target.disabled
+			}
+		}
+
+		function successfun(jsonObj){
+				main = document.querySelector('.r_box')
+				tuijian = document.querySelector('.tuijian ul')
+				console.log(tuijian)
+				data = jsonObj.data.results
+					for(var i = 0; i < data.length; i++){
+						
+						li = document.createElement('li')
+						ii = document.createElement('i')
+						a = document.createElement('a')
+						img = document.createElement('img')
+						h = document.createElement('h3')
+						tit = document.createElement('a')
+						p = document.createElement('p')
+						img.src = data[i].icon
+						tit.href = "#"
+						tit.addEventListener('click', select_art)
+						tit.url = "/web/article/" + data[i].id + '/'
+						a.append(img)
+						ii.append(a)
+						li.append(ii)
+						tit.textContent = data[i].title
+						h.append(tit)
+						li.append(h)
+						p.innerHTML = data[i].desc + '<p>' + data[i].create_time + '</p>'
+						li.append(p)
+						main.insertBefore(li, main.firstChild)
+						
+						li2 = document.createElement('li')
+						tit2 = document.createElement('a')
+						tit2.textContent = data[i].title
+						li2.append(tit2)
+						tuijian.append(li2)
+					}
+					// 下一页
+					butnext = document.querySelector('#next')
+					butnext.url = jsonObj.data.next
+					butnext.addEventListener('click', sel_many)
+					// 上一页
+					butback = document.querySelector('#previous')
+					butback.url = jsonObj.data.previous
+					butback.addEventListener('click', sel_many)
+		}
+
+		function select_art(evt){
+			$.ajax({
+				url: evt.target.url,
+				type: 'GET',
+				dataType: 'json',
+				async: true,
+				success: function(jsonObj){
+					data = jsonObj.data
+					main = document.querySelector('#box')
+					main.innerHTML = '<h1>' + data.title + '</h1>' + '<div> <br/>' + data.contents + '</div>'
+				}
+			})
+		}
+		</script>
+{% endblock %}
+
+
+{% block aside %}
+<aside class="l_box">
+ <div class="search">
+      <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="fenlei">
+      <h2>文章分类</h2>
+      <ul>
+				
+      </ul>
+    </div>
+     <div class="tuijian">
+      <h2>点击排行</h2>
+      <ul>
+        <!-- <li><a href="/">你是什么人便会遇上什么人</a></li> -->
+      </ul>
+    </div>
+<div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+        <a href="/">陌上花开</a> <a href="/">校园生活</a> <a href="/">html5</a> <a href="/">SumSung</a> <a href="/">青春</a> <a href="/">温暖</a> <a href="/">阳光</a> <a href="/">三星</a><a href="/">索尼</a> <a href="/">华维荣耀</a> <a href="/">三星</a> <a href="/">索尼</a>
+      </ul>
+    </div>
+   
+  </aside>
+{% endblock %}
+
+{% block foot %}
+  <p>Design by <a href="http://www.yangqq.com" target="_blank">杨青个人博客</a> <a href="/">蜀ICP备11002373号-1</a></p>
+{% endblock %}
+
+{% block backtop %}
+    <a href="#" class="cd-top">Top</a>
+{% endblock %}

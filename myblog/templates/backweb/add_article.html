@@ -1,0 +1,99 @@
+
+{% extends './base_main.html' %}
+
+{% block title %}
+    异清轩博客管理系统 - 写文章
+{% endblock %}
+
+{% block section %}
+    {{ block.super }}
+    {% block username %}
+        {{ uname }}
+    {% endblock %}
+    {% block info %}
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+        <div class="row">
+          <form action="" method="post" class="add-article-form" ENCTYPE="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-9">
+              <h1 class="page-header">撰写新文章</h1>
+              <div class="form-group">
+                <label for="article-title" class="sr-only">标题</label>
+                <input type="text" id="article-title" name="title" value="{{ article.title }}" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
+              </div>
+              {# 内容框 #}
+              <div class="form-group">
+                <textarea name="content" id="editor_id" style="width: 100%; height: 470px;">{{ article.contents }}</textarea>
+              </div>
+
+              <div class="add-article-box">
+                <h2 class="add-article-box-title"><span>描述</span></h2>
+                <div class="add-article-box-content">
+                  <textarea class="form-control" name="desc" autocomplete="off">{{ article.desc }}</textarea>
+                  <span class="prompt-text">描述是可选的手工创建的内容总结，并可以在网页描述中使用</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h1 class="page-header">操作</h1>
+              <div class="add-article-box">
+                <h2 class="add-article-box-title"><span>文章类型</span></h2>
+                <div class="add-article-box-content">
+                  <ul class="category-list">
+                  {% for cat in cats %}
+                    <li>
+                      <label>
+                        <input name="art_type" type="radio" value="{{ cat.id }}" {% if article.art_type.id == cat.id %} checked {% endif %}>
+                        {{ cat.type_name }}</em></label>
+                    </li>
+                  {% endfor %}
+
+                  </ul>
+                </div>
+              </div>
+
+            {% if article.icon %}
+              <div class="add-article-box">
+                <h2 class="add-article-box-title"><span>本文配图</span></h2>
+                    <img src="/media/{{ article.icon }}" style="width: 100%; height:100%">
+              </div>
+              {% endif %}
+
+              <div class="add-article-box">
+                <h2 class="add-article-box-title"><span>文章首图</span></h2>
+                <div class="add-article-box-footer">
+                  <input type="file" name="icon" style="position: relative; ">
+                </div>
+              </div>
+
+              <div class="add-article-box">
+                <h2 class="add-article-box-title"><span>发布</span></h2>
+                <div class="add-article-box-content">
+                  <p><label>状态：</label><span class="article-status-display">未发布</span></p>
+                  <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
+                  <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="" /></span></p>
+                </div>
+                <div class="add-article-box-footer">
+                  <button class="btn btn-primary" type="submit" name="submit">发布</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endblock %}
+{% endblock %}
+
+{% block js %}
+    {# 配置富文本编辑器 #}
+    {% load static %}
+    <script src="{% static 'kindeditor/kindeditor-all.js' %}"></script>
+    <script src="{% static 'kindeditor/lang/zh-CN.js' %}"></script>
+    <script type="text/javascript">
+        KindEditor.ready(function(K) {
+                window.editor = K.create('#editor_id',{
+                    uploadJson:'/util/upload/kindeditor'
+                });
+        });
+    </script>
+{% endblock %}

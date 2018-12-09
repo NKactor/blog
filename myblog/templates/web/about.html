@@ -1,0 +1,47 @@
+
+{% extends './base_main.html' %}
+
+
+{% block js %}
+	{{ block.super }}
+<script type="text/javascript">
+	$.ajax({
+			url: '/api/web/userinfo/',
+			type: 'GET',
+			dataType: 'json',
+			success: success_fun,
+			error: function(data){
+				console.log('失败')
+			}
+	});
+	
+	function success_fun(jsonObj){
+			p = document.querySelector('.about p')
+			image = document.querySelector('img')
+			p = document.querySelector('.about p')
+			data = jsonObj.data.results
+			pimg = document.createElement('img')
+			p.innerHTML = data[0].udesc
+			pimg.src = data[0].head_img
+			p.insertBefore(pimg, p.lastChild)
+			if (data[0].head_img){
+				image.src = data[0].head_img
+			}else{
+					$(image).empty()
+					image.textContent = '该用户没有上传头像'
+			}
+				
+		}
+</script>
+{% endblock %}
+
+{% block main %}
+<main class="r_box">
+     <div class="about">
+			 <p>
+				 
+			 </p> 
+     </div>
+		 <img style="width: auto; height: auto">
+  </main>
+{% endblock %}

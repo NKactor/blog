@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    {% block meta %}
+    {% endblock %}
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+
+    {% block css %}
+    {% endblock %}
+
+
+</head>
+
+<body class="user-select">
+    {% block div %}
+    {% endblock %}
+
+{% block section %}
+
+    {% block header %}
+    {% endblock %}
+
+    {% block aside %}
+    {% endblock %}
+
+        {% block info %}
+        {% endblock %}
+
+{% endblock %}
+
+   {% block other %}
+   {% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+</body>
+</html>

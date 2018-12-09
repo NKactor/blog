@@ -1,0 +1,38 @@
+
+{% extends './base_other.html' %}
+
+{% block css %}
+	{{ block.super }}
+	<style type="text/css">
+		h1 {
+			text-align: center;
+		}
+		main button {
+			width: 15%;
+			height: 30px;
+			color: white;
+			background-color: gainsboro;
+			font-size: 15px;
+			border: none;
+			outline: none;
+			position: relative;
+			left: 38%;
+			margin-right: 20px;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block main %}
+	 <main id="box">
+		 <div class="r_box"></div>
+
+	 <div id="but">
+			<button type="button" id="previous">上一页</button>
+			<button type="button" id="next">下一页</button></div>
+	 </main>
+
+{% endblock %}
+
+
